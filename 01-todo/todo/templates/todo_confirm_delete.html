@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Deletion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-start justify-center p-4">
+
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl mt-20 border border-red-200">
+        <header class="mb-6 text-center">
+            <h1 class="text-3xl font-bold text-red-600">
+                Are you sure?
+            </h1>
+            <p class="text-gray-600 mt-2">
+                You are about to permanently delete this task. This action cannot be undone.
+            </p>
+        </header>
+
+        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-6">
+            <p class="font-semibold text-red-700">Task to Delete:</p>
+            <p class="text-xl font-mono text-red-900 mt-1">{{ object.title }}</p>
+            {% if object.description %}
+                <p class="text-sm text-red-600 mt-2 italic">{{ object.description|truncatechars:100 }}</p>
+            {% endif %}
+        </div>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="flex justify-between items-center pt-4">
+                <a href="{% url 'todo_list' %}" 
+                   class="inline-flex items-center px-6 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-100 transition duration-150">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="px-6 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition duration-150 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Confirm Deletion
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

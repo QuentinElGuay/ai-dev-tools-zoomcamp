@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit Task{% else %}Create New Task{% endif %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-start justify-center p-4">
+
+    <div class="w-full max-w-xl bg-white p-8 rounded-xl shadow-2xl mt-10">
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 border-b pb-2">
+                {% if form.instance.pk %}
+                    Edit Task: <span class="text-indigo-600">{{ form.instance.title }}</span>
+                {% else %}
+                    Create New Task
+                {% endif %}
+            </h1>
+        </header>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="space-y-1">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs italic">{{ field.errors }}</p>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <p class="text-gray-400 text-xs">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="flex justify-between items-center pt-4">
+                <a href="{% url 'todo_list' %}" 
+                   class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-150 transform hover:scale-[1.02]">
+                    {% if form.instance.pk %}Save Changes{% else %}Add Task{% endif %}
+                </button>
+            </div>
+        </form>
+
+        {% comment %} 
+        NOTE: A small detail for the form rendering—the model form fields 
+        will use default HTML elements. You might want to add custom CSS classes
+        to them for a better look (e.g., using a custom `__init__` method in TodoForm)
+        or explicitly render fields in the template. For simplicity, we rely on the 
+        default form rendering here.
+        {% endcomment %}
+    </div>
+
+</body>
+</html>
